@@ -32,13 +32,20 @@ vows.describe('node-cloudservers/authentication').addBatch({
         var options = cloudservers.config;
         cloudservers.setAuth(options, this.callback);
       },
-      "should respond with 201 and appropriate headers": function (err, res, body) {
+      "should respond with 201 and appropriate headers": function (err, res) {
         assert.equal(res.statusCode, 204); 
         assert.isObject(res.headers);
         assert.include(res.headers, 'x-server-management-url');
         assert.include(res.headers, 'x-storage-url');
         assert.include(res.headers, 'x-cdn-management-url');
         assert.include(res.headers, 'x-auth-token');
+      },
+      "should update the config with appropriate urls": function (err, res) {
+        var config = cloudservers.config;
+        assert.equal(res.headers['x-server-management-url'], config.serverUrl);
+        assert.equal(res.headers['x-storage-url'], config.storageUrl);
+        assert.equal(res.headers['x-cdn-management-url'], config.cdnUrl);
+        assert.equal(res.headers['x-auth-token'], config.authToken);
       }
     },
     "with an invalid username and api key": {

@@ -34,8 +34,12 @@ vows.describe('node-cloudservers/servers').addBatch({
       topic: function () {
         cloudservers.getServers(this.callback);
       },
-      "should return the list of servers": function () {
-        
+      "should return the list of servers": function (err, servers) {
+        servers.forEach(function (server) {
+          assert.instanceOf(server, cloudservers.Server);
+          assert.isNotNull(server.id);
+          assert.isNotNull(server.name);
+        });
       }
     }
   }

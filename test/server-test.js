@@ -15,15 +15,32 @@ require.paths.unshift(path.join(__dirname, '..', 'lib'));
 
 var cloudservers = require('cloudservers');
 
+var testContext = {};
 
+var assertServer = function (server) {
+  assert.instanceOf(server, cloudservers.Server);
+  assert.isNotNull(server.id);
+  assert.isNotNull(server.name);
+};
+
+var assertServerDetails = function (server) {
+  assertServer(server);
+  assert.isNotNull(server.progess);
+  assert.isNotNull(server.imageId);
+  assert.isNotNull(server.flavorId);
+  assert.isNotNull(server.status);
+  assert.isNotNull(server.hostId);
+  assert.isNotNull(server.addresses);
+};
 
 vows.describe('node-cloudservers/servers').addBatch({
   "The node-cloudservers client": {
     "when authenticated": {
       topic: function () {
-        cloudservers.setAuth(cloudservers.config, this.callback);
+        var options = cloudservers.config
+        cloudservers.setAuth(options.auth, this.callback);
       },
-      "should return with 201": function (err, res) {
+      "should return with 204": function (err, res) {
         assert.equal(res.statusCode, 204);
       }
     }
@@ -31,15 +48,37 @@ vows.describe('node-cloudservers/servers').addBatch({
 }).addBatch({
   "The node-cloudservers client": {
     "the getServers() method": {
-      topic: function () {
-        cloudservers.getServers(this.callback);
+      "with no details": {
+        topic: function () {
+          cloudservers.getServers(this.callback);
+        },
+        "should return the list of servers": function (err, servers) {
+          testContext.servers = servers;
+          servers.forEach(function (server) {
+            assertServer(server);
+          });
+        }
       },
-      "should return the list of servers": function (err, servers) {
-        servers.forEach(function (server) {
-          assert.instanceOf(server, cloudservers.Server);
-          assert.isNotNull(server.id);
-          assert.isNotNull(server.name);
-        });
+      "with details": {
+        topic: function () {
+          cloudservers.getServers(true, this.callback);
+        },
+        "should return the list of servers": function (err, servers) {
+          servers.forEach(function (server) {
+            assertServerDetails(server);
+          });
+        }
+      }
+    }
+  }
+}).addBatch({
+  "The node-cloudservers client": {
+    "the getServer() method": {
+      topic: function () {
+        cloudservers.getServer(testContext.servers[0].id, this.callback);
+      },
+      "should return a valid server": function (err, server) {
+        assertServerDetails(server);
       }
     }
   }

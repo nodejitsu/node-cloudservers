@@ -18,9 +18,9 @@ var cloudservers = require('cloudservers');
 vows.describe('node-cloudservers/authentication').addBatch({
   "The node-cloudservers client": {
     "should have core methods defined": function() {
-      assert.isObject(cloudservers.config);
-      assert.include(cloudservers.config, 'username');
-      assert.include(cloudservers.config, 'apiKey');
+      assert.isObject(cloudservers.config.auth);
+      assert.include(cloudservers.config.auth, 'username');
+      assert.include(cloudservers.config.auth, 'apiKey');
       
       assert.isFunction(cloudservers.setAuth);
       assert.isFunction(cloudservers.getServer);
@@ -30,9 +30,9 @@ vows.describe('node-cloudservers/authentication').addBatch({
     "with a valid username and api key": {
       topic: function () {
         var options = cloudservers.config;
-        cloudservers.setAuth(options, this.callback);
+        cloudservers.setAuth(options.auth, this.callback);
       },
-      "should respond with 201 and appropriate headers": function (err, res) {
+      "should respond with 204 and appropriate headers": function (err, res) {
         assert.equal(res.statusCode, 204); 
         assert.isObject(res.headers);
         assert.include(res.headers, 'x-server-management-url');
@@ -42,9 +42,9 @@ vows.describe('node-cloudservers/authentication').addBatch({
       },
       "should update the config with appropriate urls": function (err, res) {
         var config = cloudservers.config;
-        assert.equal(res.headers['x-server-management-url'], config.serverUrl);
-        assert.equal(res.headers['x-storage-url'], config.storageUrl);
-        assert.equal(res.headers['x-cdn-management-url'], config.cdnUrl);
+        assert.equal(res.headers['x-server-management-url'], config.serverUrl.href);
+        assert.equal(res.headers['x-storage-url'], config.storageUrl.href);
+        assert.equal(res.headers['x-cdn-management-url'], config.cdnUrl.href);
         assert.equal(res.headers['x-auth-token'], config.authToken);
       }
     },

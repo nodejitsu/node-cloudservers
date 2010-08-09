@@ -9,6 +9,7 @@
 var path = require('path'),
     vows = require('vows'),
     eyes = require('eyes'),
+    helpers = require('./helpers'),
     assert = require('assert');
     
 require.paths.unshift(path.join(__dirname, '..', 'lib'));
@@ -16,18 +17,6 @@ require.paths.unshift(path.join(__dirname, '..', 'lib'));
 var cloudservers = require('cloudservers');
 
 var testContext = {};
-
-var assertFlavor = function (flavor) {
-  assert.instanceOf(flavor, cloudservers.Flavor);
-  assert.isNotNull(flavor.id);
-  assert.isNotNull(flavor.name);
-};
-
-var assertFlavorDetails = function (flavor) {
-  assertFlavor(flavor);
-  assert.isNotNull(flavor.ram);
-  assert.isNotNull(flavor.disk);
-};
 
 vows.describe('node-cloudservers/flavors').addBatch({
   "The node-cloudservers client": {
@@ -51,7 +40,7 @@ vows.describe('node-cloudservers/flavors').addBatch({
         "should return the list of flavors": function (err, flavors) {
           testContext.flavors = flavors;
           flavors.forEach(function (flavor) {
-            assertFlavor(flavor);
+            helpers.assertFlavor(flavor);
           });
         }
       },
@@ -61,7 +50,7 @@ vows.describe('node-cloudservers/flavors').addBatch({
         },
         "should return the list of flavors": function (err, flavors) {
           flavors.forEach(function (flavor) {
-            assertFlavorDetails(flavor);
+            helpers.assertFlavorDetails(flavor);
           });
         }
       }
@@ -74,7 +63,7 @@ vows.describe('node-cloudservers/flavors').addBatch({
         cloudservers.getFlavor(testContext.flavors[0].id, this.callback);
       },
       "should return a valid flavor": function (err, flavor) {
-        assertFlavorDetails(flavor);
+        helpers.assertFlavorDetails(flavor);
       }
     }
   }

@@ -9,6 +9,7 @@
 var path = require('path'),
     vows = require('vows'),
     eyes = require('eyes'),
+    helpers = require('./helpers'),
     assert = require('assert');
     
 require.paths.unshift(path.join(__dirname, '..', 'lib'));
@@ -16,19 +17,6 @@ require.paths.unshift(path.join(__dirname, '..', 'lib'));
 var cloudservers = require('cloudservers');
 
 var testContext = {};
-
-var assertImage = function (image) {
-  assert.instanceOf(image, cloudservers.Image);
-  assert.isNotNull(image.id);
-  assert.isNotNull(image.name);
-};
-
-var assertImageDetails = function (image) {
-  assertImage(image);
-  assert.isNotNull(image.updated);
-  assert.isNotNull(image.created);
-  assert.isNotNull(image.status);
-};
 
 vows.describe('node-cloudservers/images').addBatch({
   "The node-cloudservers client": {
@@ -52,7 +40,7 @@ vows.describe('node-cloudservers/images').addBatch({
         "should return the list of images": function (err, images) {
           testContext.images = images;
           images.forEach(function (image) {
-            assertImage(image);
+            helpers.assertImage(image);
           });
         }
       },
@@ -62,7 +50,7 @@ vows.describe('node-cloudservers/images').addBatch({
         },
         "should return the list of images": function (err, images) {
           images.forEach(function (image) {
-            assertImageDetails(image);
+            helpers.assertImageDetails(image);
           });
         }
       }
@@ -75,7 +63,7 @@ vows.describe('node-cloudservers/images').addBatch({
         cloudservers.getImage(testContext.images[0].id, this.callback);
       },
       "should return a valid image": function (err, image) {
-        assertImageDetails(image);
+        helpers.assertImageDetails(image);
       }
     }
   }

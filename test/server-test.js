@@ -154,9 +154,9 @@ vows.describe('node-cloudservers/servers').addBatch({
         //eyes.inspect(testContext.servers[0]);
         //testContext.servers[0].reboot(this.callback);
       },
-      "should return a valid server": function () {
-        //assertServerDetails(server);
-      }
+      //"should return a valid server": function () {
+      //  assertServerDetails(server);
+      //}
     }
   }
 }).export(module);

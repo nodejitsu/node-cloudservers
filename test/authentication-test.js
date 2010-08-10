@@ -71,4 +71,18 @@ vows.describe('node-cloudservers/authentication').addBatch({
       }
     }
   }
+}).addBatch({
+  "The node-cloudservers client": {
+    "the getLimits() method": {
+      topic: function () {
+        cloudservers.getLimits(this.callback); 
+      },
+      "should return the proper limits": function (limits) {
+        assert.isNotNull(limits);
+        assert.include(limits, 'absolute');
+        assert.include(limits, 'rate');
+        assert.isArray(limits.rate);
+      }
+    }
+  }
 }).export(module);

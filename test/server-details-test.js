@@ -99,6 +99,18 @@ vows.describe('node-cloudservers/servers/details').addBatch({
         },
         "should return a valid backup schedule": function (backup) {
           assert.isNotNull(backup);
+          assert.include(backup, 'enabled');
+          assert.include(backup, 'weekly');
+          assert.include(backup, 'daily');
+        }
+      },
+      "the disableBackup() method": {
+        topic: function () {
+          this.server = testContext.servers[0];
+          this.server.disableBackup(this.callback);
+        },
+        "should disable the backup schedule": function () {
+          
         }
       },
       "the updateBackup() method": {
@@ -110,7 +122,7 @@ vows.describe('node-cloudservers/servers/details').addBatch({
           };
           
           var that = this;
-          this.server = testContext.servers[0];
+          this.server = testContext.servers[2];
           this.server.updateBackup(this.backup, function (responseCode) {
             that.server.getBackup(that.callback);
           });

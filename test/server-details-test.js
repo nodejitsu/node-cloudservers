@@ -89,4 +89,18 @@ vows.describe('node-cloudservers/servers/details').addBatch({
       }
     }
   }
+}).addBatch({
+  "The node-cloudservers client": {
+    "an instance of a CloudServer": {
+      "the getBackups() method": {
+        topic: function () {
+          this.server = testContext.servers[0];
+          this.server.getBackups(this.callback);
+        },
+        "should return a valid backup schedule": function (backups) {
+          assert.isNotNull(backups);
+        }
+      }
+    }
+  }
 }).export(module);

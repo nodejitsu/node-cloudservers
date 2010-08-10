@@ -106,7 +106,7 @@ vows.describe('node-cloudservers/servers/details').addBatch({
       },
       "the disableBackup() method": {
         topic: function () {
-          this.server = testContext.servers[0];
+          this.server = testContext.servers[1];
           this.server.disableBackup(this.callback);
         },
         "should disable the backup schedule": function () {

@@ -27,6 +27,15 @@ vows.describe('node-cloudservers/authentication').addBatch({
       assert.isFunction(cloudservers.getServers);
       assert.isFunction(cloudservers.createServer);
     },
+    "the getVersion() method": {
+      topic: function () {
+        cloudservers.getVersion(this.callback);
+      },
+      "should return the proper version": function (versions) {
+        assert.isArray(versions);
+        assert.isFalse(versions.length == 0);
+      }
+    },
     "with a valid username and api key": {
       topic: function () {
         var options = cloudservers.config;

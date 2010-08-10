@@ -92,13 +92,33 @@ vows.describe('node-cloudservers/servers/details').addBatch({
 }).addBatch({
   "The node-cloudservers client": {
     "an instance of a CloudServer": {
-      "the getBackups() method": {
+      "the getBackup() method": {
         topic: function () {
           this.server = testContext.servers[0];
-          this.server.getBackups(this.callback);
+          this.server.getBackup(this.callback);
         },
-        "should return a valid backup schedule": function (backups) {
-          assert.isNotNull(backups);
+        "should return a valid backup schedule": function (backup) {
+          assert.isNotNull(backup);
+        }
+      },
+      "the updateBackup() method": {
+        topic: function () {
+          this.backup = {
+            "enabled": true,
+            "weekly": "THURSDAY",
+            "daily": "H_0400_0600"
+          };
+          
+          var that = this;
+          this.server = testContext.servers[0];
+          this.server.updateBackup(this.backup, function (responseCode) {
+            that.server.getBackup(that.callback);
+          });
+        },
+        "should update the backup schedule": function (backup) {
+          assert.equal(backup.enabled, true);
+          assert.equal(backup.weekly, 'THURSDAY');
+          assert.equal(backup.daily, 'H_0400_0600');
         }
       }
     }

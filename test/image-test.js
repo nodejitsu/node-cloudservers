@@ -32,6 +32,22 @@ vows.describe('node-cloudservers/images').addBatch({
   }
 }).addBatch({
   "The node-cloudservers client": {
+    "the getServers() method": {
+      "with no details": {
+        topic: function () {
+          cloudservers.getServers(this.callback);
+        },
+        "should return the list of servers": function (err, servers) {
+          testContext.servers = servers;
+          servers.forEach(function (server) {
+            helpers.assertServer(server);
+          });
+        }
+      }
+    }
+  }
+}).addBatch({
+  "The node-cloudservers client": {
     "the getImages() method": {
       "with no details": {
         topic: function () {
@@ -65,6 +81,24 @@ vows.describe('node-cloudservers/images').addBatch({
       "should return a valid image": function (err, image) {
         helpers.assertImageDetails(image);
       }
+    },
+    "the createImage() method": {
+      "with a server id": {
+        topic: function () {
+          cloudservers.createImage('test-image-id', testContext.images[0].id, this.callback);
+        },
+        "should create a new image": function (image) {
+          
+        }
+      },
+      /*"with a server instance": {
+        topic: function () {
+          //cloudservers.createImage
+        },
+        "should create a new image": function (image) {
+          
+        }
+      }*/
     }
   }
 }).export(module);

@@ -17,6 +17,7 @@ require.paths.unshift(path.join(__dirname, '..', 'lib'));
 var cloudservers = require('cloudservers');
 
 var testContext = {};
+testContext.servers = [];
 
 var findImage = function (name) {
   for(var i = 0; i < testContext.images.length; i++) {
@@ -43,43 +44,7 @@ vows.describe('node-cloudservers/servers').addBatch({
       },
       "should return with 204": function (err, res) {
         assert.equal(res.statusCode, 204);
-      }
-    }
-  }
-}).addBatch({
-  "The node-cloudservers client": {
-    "the getServers() method": {
-      "with no details": {
-        topic: function () {
-          cloudservers.getServers(this.callback);
-        },
-        "should return the list of servers": function (err, servers) {
-          testContext.servers = servers;
-          servers.forEach(function (server) {
-            helpers.assertServer(server);
-          });
-        }
-      },
-      "with details": {
-        topic: function () {
-          cloudservers.getServers(true, this.callback);
-        },
-        "should return the list of servers": function (err, servers) {
-          servers.forEach(function (server) {
-            helpers.assertServerDetails(server);
-          });
-        }
-      }
-    }
-  }
-}).addBatch({
-  "The node-cloudservers client": {
-    "the getServer() method": {
-      topic: function () {
-        cloudservers.getServer(testContext.servers[0].id, this.callback);
-      },
-      "should return a valid server": function (err, server) {
-        helpers.assertServerDetails(server);
+        eyes.inspect(cloudservers.config);
       }
     }
   }
@@ -127,6 +92,7 @@ vows.describe('node-cloudservers/servers').addBatch({
           }, this.callback);
         },
         "should return a valid server": function (server) {
+          eyes.inspect(server);
           helpers.assertServerDetails(server);
         }
       },
@@ -134,7 +100,7 @@ vows.describe('node-cloudservers/servers').addBatch({
         topic: function () {
           var image = findImage('Ubuntu 10.04 LTS (lucid)');
           var flavor = findFlavor('256 server');
-          
+
           cloudservers.createServer({
             name: 'create-test-objects',
             image: image,
@@ -142,7 +108,61 @@ vows.describe('node-cloudservers/servers').addBatch({
           }, this.callback);
         },
         "should return a valid server": function (server) {
+          eyes.inspect(server);
           helpers.assertServerDetails(server);
+        }
+      }
+    }
+  }
+}).addBatch({
+  "The node-cloudservers client": {
+    "the getServers() method": {
+      "with no details": {
+        topic: function () {
+          cloudservers.getServers(this.callback);
+        },
+        "should return the list of servers": function (err, servers) {
+          testContext.servers = servers;
+          servers.forEach(function (server) {
+            helpers.assertServer(server);
+          });
+        }
+      },
+      "with details": {
+        topic: function () {
+          cloudservers.getServers(true, this.callback);
+        },
+        "should return the list of servers": function (err, servers) {
+          servers.forEach(function (server) {
+            helpers.assertServerDetails(server);
+          });
+        }
+      }
+    }
+  }
+}).addBatch({
+  "The node-cloudservers client": {
+    "the getServer() method": {
+      topic: function () {
+        cloudservers.getServer(testContext.servers[0].id, this.callback);
+      },
+      "should return a valid server": function (err, server) {
+        helpers.assertServerDetails(server);
+      }
+    }
+  }
+}).addBatch({
+  "The node-cloudservers client": {
+    "with an instance of a Server": {
+      "the destroy() method": {
+        topic: function () {
+          var that = this;
+          testContext.servers.forEach(function (server) {
+            server.destroy(that.callback);
+          });
+        },
+        "should respond with 202": function (err, res) {
+          assert.equal(res.statusCode, 202); 
         }
       }
     }

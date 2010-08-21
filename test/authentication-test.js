@@ -51,9 +51,9 @@ vows.describe('node-cloudservers/authentication').addBatch({
       },
       "should update the config with appropriate urls": function (err, res) {
         var config = cloudservers.config;
-        assert.equal(res.headers['x-server-management-url'], config.serverUrl.href);
-        assert.equal(res.headers['x-storage-url'], config.storageUrl.href);
-        assert.equal(res.headers['x-cdn-management-url'], config.cdnUrl.href);
+        assert.equal(res.headers['x-server-management-url'], config.serverUrl);
+        assert.equal(res.headers['x-storage-url'], config.storageUrl);
+        assert.equal(res.headers['x-cdn-management-url'], config.cdnUrl);
         assert.equal(res.headers['x-auth-token'], config.authToken);
       }
     },

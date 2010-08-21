@@ -44,7 +44,6 @@ vows.describe('node-cloudservers/servers').addBatch({
       },
       "should return with 204": function (err, res) {
         assert.equal(res.statusCode, 204);
-        eyes.inspect(cloudservers.config);
       }
     }
   }
@@ -92,7 +91,6 @@ vows.describe('node-cloudservers/servers').addBatch({
           }, this.callback);
         },
         "should return a valid server": function (server) {
-          eyes.inspect(server);
           helpers.assertServerDetails(server);
         }
       },
@@ -108,7 +106,6 @@ vows.describe('node-cloudservers/servers').addBatch({
           }, this.callback);
         },
         "should return a valid server": function (server) {
-          eyes.inspect(server);
           helpers.assertServerDetails(server);
         }
       }
@@ -122,7 +119,6 @@ vows.describe('node-cloudservers/servers').addBatch({
           cloudservers.getServers(this.callback);
         },
         "should return the list of servers": function (err, servers) {
-          testContext.servers = servers;
           servers.forEach(function (server) {
             helpers.assertServer(server);
           });
@@ -133,6 +129,7 @@ vows.describe('node-cloudservers/servers').addBatch({
           cloudservers.getServers(true, this.callback);
         },
         "should return the list of servers": function (err, servers) {
+          testContext.servers = servers;
           servers.forEach(function (server) {
             helpers.assertServerDetails(server);
           });
@@ -154,11 +151,22 @@ vows.describe('node-cloudservers/servers').addBatch({
 }).addBatch({
   "The node-cloudservers client": {
     "with an instance of a Server": {
-      "the destroy() method": {
+      "the destroy() method with the first server": {
         topic: function () {
-          var that = this;
-          testContext.servers.forEach(function (server) {
-            server.destroy(that.callback);
+          var that1 = this;
+          testContext.servers[0].setWait({ status: 'ACTIVE' }, 5000, function () {
+            testContext.servers[0].destroy(that1.callback);
+          });
+        },
+        "should respond with 202": function (err, res) {
+          assert.equal(res.statusCode, 202); 
+        }
+      },
+      "the destroy() method with the second server": {
+        topic: function () {
+          var that2 = this;
+          testContext.servers[1].setWait({ status: 'ACTIVE' }, 5000, function () {
+            testContext.servers[1].destroy(that2.callback);
           });
         },
         "should respond with 202": function (err, res) {

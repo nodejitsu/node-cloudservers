@@ -131,6 +131,7 @@ vows.describe('node-cloudservers/servers').addBatch({
           cloudservers.getServers(this.callback);
         },
         "should return the list of servers": function (err, servers) {
+          testContext.servers = servers;
           servers.forEach(function (server) {
             helpers.assertServer(server);
           });
@@ -141,7 +142,6 @@ vows.describe('node-cloudservers/servers').addBatch({
           cloudservers.getServers(true, this.callback);
         },
         "should return the list of servers": function (err, servers) {
-          testContext.servers = servers;
           servers.forEach(function (server) {
             helpers.assertServerDetails(server);
           });
@@ -166,38 +166,38 @@ vows.describe('node-cloudservers/servers').addBatch({
       "the getAddresses() method": {
         "when requesting all addresses": {
           topic: function () {
-            this.server = testContext.servers[0];
-            this.server.getAddresses(this.callback);
+            this.server0 = testContext.servers[0];
+            this.server0.getAddresses(this.callback);
           },
           "should return all valid addresses": function (addresses) {
             assert.include(addresses, 'public');
             assert.include(addresses, 'private');
-            assert.include(this.server.addresses, 'public');
-            assert.include(this.server.addresses, 'private');
+            assert.include(this.server0.addresses, 'public');
+            assert.include(this.server0.addresses, 'private');
           }
         },
         "when requesting public addresses": {
           topic: function (server) {
-            this.server = testContext.servers[1];
-            this.server.getAddresses('public', this.callback);
+            this.server1 = testContext.servers[1];
+            this.server1.getAddresses('public', this.callback);
           },
           "should return all valid addresses": function (addresses) {
             assert.include(addresses, 'public');
             assert.isUndefined(addresses.private);
-            assert.include(this.server.addresses, 'public');
-            assert.isUndefined(this.server.addresses.private);
+            assert.include(this.server1.addresses, 'public');
+            assert.isUndefined(this.server1.addresses.private);
           }
         },
         "when requesting private addresses": {
           topic: function (server) {
-            this.server = testContext.servers[2];
-            this.server.getAddresses('private', this.callback);
+            this.server2 = testContext.servers[2];
+            this.server2.getAddresses('private', this.callback);
           },
           "should return all valid addresses": function (addresses) {
             assert.include(addresses, 'private');
             assert.isUndefined(addresses.public);
-            assert.include(this.server.addresses, 'private');
-            assert.isUndefined(this.server.addresses.public);
+            assert.include(this.server2.addresses, 'private');
+            assert.isUndefined(this.server2.addresses.public);
           }
         }
       }
@@ -208,8 +208,8 @@ vows.describe('node-cloudservers/servers').addBatch({
     "an instance of a CloudServer": {
       "the getBackup() method": {
         topic: function () {
-          this.server = testContext.servers[0];
-          this.server.getBackup(this.callback);
+          this.server0 = testContext.servers[0];
+          this.server0.getBackup(this.callback);
         },
         "should return a valid backup schedule": function (backup) {
           assert.isNotNull(backup);
@@ -220,31 +220,32 @@ vows.describe('node-cloudservers/servers').addBatch({
       },
       "the disableBackup() method": {
         topic: function () {
-          this.server = testContext.servers[1];
-          this.server.disableBackup(this.callback);
+          var that2 = this;
+          that2.server = testContext.servers[1];
+          that2.server.setWait({ status: 'ACTIVE' }, 5000, function () {
+            that2.server.disableBackup(that2.callback);
+          });
         },
-        "should disable the backup schedule": function () {
-
+        "should respond with 204": function (err, res) {
+          assert.equal(res.statusCode, 204);
         }
       },
       "the updateBackup() method": {
         topic: function () {
-          this.backup = {
+          var backup = {
             "enabled": true,
             "weekly": "THURSDAY",
             "daily": "H_0400_0600"
           };
-
-          var that = this;
-          this.server = testContext.servers[2];
-          this.server.updateBackup(this.backup, function (res) {
-            that.server.getBackup(that.callback);
+          
+          var that3 = this;
+          that3.server = testContext.servers[2];
+          that3.server.setWait({ status: 'ACTIVE' }, 5000, function () {
+            that3.server.updateBackup(backup, that3.callback);
           });
         },
-        "should update the backup schedule": function (backup) {
-          assert.equal(backup.enabled, true);
-          assert.equal(backup.weekly, 'THURSDAY');
-          assert.equal(backup.daily, 'H_0400_0600');
+        "should respond with 202": function (err, res) {
+          assert.equal(res.statusCode, 202);
         }
       }
     }
@@ -266,8 +267,9 @@ vows.describe('node-cloudservers/servers').addBatch({
       "the destroy() method with the second server": {
         topic: function () {
           var that2 = this;
-          testContext.servers[1].setWait({ status: 'ACTIVE' }, 5000, function () {
-            testContext.servers[1].destroy(that2.callback);
+          that2.server = testContext.servers[1];
+          that2.server.setWait({ status: 'ACTIVE' }, 5000, function () {
+            that2.server.destroy(that2.callback);
           });
         },
         "should respond with 202": function (err, res) {
@@ -277,12 +279,16 @@ vows.describe('node-cloudservers/servers').addBatch({
       "the destroy() method with the third server": {
         topic: function () {
           var that3 = this;
-          testContext.servers[2].setWait({ status: 'ACTIVE' }, 5000, function () {
-            testContext.servers[2].destroy(that3.callback);
+          that3.server = testContext.servers[2];
+          that3.server.setWait({ status: 'ACTIVE' }, 5000, function () {
+            that3.server.destroy(that3.callback);
           });
         },
         "should respond with 202": function (err, res) {
-          assert.equal(res.statusCode, 202); 
+          assert.isNull(err);
+          if(!err) {
+            assert.equal(res.statusCode, 202); 
+          }
         }
       }
     }

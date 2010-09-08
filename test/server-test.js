@@ -8,7 +8,6 @@
  
 var path = require('path'),
     vows = require('vows'),
-    eyes = require('eyes'),
     helpers = require('./helpers'),
     assert = require('assert');
     
@@ -297,7 +296,6 @@ vows.describe('node-cloudservers/servers').addBatch({
   "The node-cloudservers client": {
     "the reboot() method": {
       topic: function () {
-        //eyes.inspect(testContext.servers[0]);
         //testContext.servers[0].reboot(this.callback);
       },
       //"should return a valid server": function () {

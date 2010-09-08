@@ -8,7 +8,6 @@
  
 var path = require('path'),
     vows = require('vows'),
-    eyes = require('eyes'),
     assert = require('assert');
     
 require.paths.unshift(path.join(__dirname, '..', 'lib'));

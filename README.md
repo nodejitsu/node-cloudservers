@@ -14,7 +14,12 @@ A client implementation for Rackspace CloudServers in node.js
   npm install cloudservers
 </pre>
 
+### [Getting Rackspace Account][4]
+
+
 ## Usage
+
+[http://blog.nodejitsu.com/nodejs-cloud-server-in-three-minutes][4]
 
 The node-cloudservers library is compliant with the [Rackspace CloudServers API][0]. Using node-cloudservers is easy for a variety of scenarios: authenticating, getting flavors and images, creating servers, and working with servers.
 
@@ -34,7 +39,7 @@ Before we can do anything with cloudservers, we have to authenticate. Authentica
 </pre>
 
 ### Getting Flavors and Images
-There are several entities in the Rackspace CloudServer ecosystem: images, flavors, and servers. Both the getFlavors and getImages methods take an optional first parameter which when set to true will return more details for the objects returned. Here's how to get the list of all available flavors and images associated with your Rackspace account:
+There are several entities in the [Rackspace CloudServer][4] ecosystem: images, flavors, and servers. Both the getFlavors and getImages methods take an optional first parameter which when set to true will return more details for the objects returned. Here's how to get the list of all available flavors and images associated with your Rackspace account:
 <pre>
   cloudservers.setAuth(example.auth, function () {
     cloudservers.getFlavors(function (err, flavors) {
@@ -52,7 +57,7 @@ There are several entities in the Rackspace CloudServer ecosystem: images, flavo
 </pre>
 
 ### Create Server
-If you manually create servers yourself via the Rackspace Cloud management console, you can skip this section. For dynamically load balanced applications like [nodejitsu][1], creating servers on-the-fly is important. To create a server, you will need the id of the image and flavor of the server. You can also pass an instance of a node-cloudservers Flavor or Image. 
+If you manually create servers yourself via the [Rackspace CloudServer][4] management console, you can skip this section. For dynamically load balanced applications like [nodejitsu][1], creating servers on-the-fly is important. To create a server, you will need the id of the image and flavor of the server. You can also pass an instance of a node-cloudservers Flavor or Image. 
 
 <pre>
   var options = {
@@ -76,7 +81,7 @@ Once you've created a server, you can't work with it until it has become active.
 </pre>
 
 ### Working with Servers
-If you have already created a some Rackspace CloudServer instances it is easy to get them from your account with node-cloudservers with the getServers method. This method takes an optional first parameter that when set to true will return all details for the servers:
+If you have already created a some [Rackspace CloudServer][4] instances it is easy to get them from your account with node-cloudservers with the getServers method. This method takes an optional first parameter that when set to true will return all details for the servers:
 <pre>
   cloudservers.getServers(true, function (servers) {
     // Inspect the servers that have been returned
@@ -87,7 +92,7 @@ If you have already created a some Rackspace CloudServer instances it is easy to
 Once you're working with servers that are already active there are several operations that you can perform on it:
 
 #### destroy
-The 'destroy' method will delete a server from your Rackspace account.
+The 'destroy' method will delete a server from your [Rackspace CloudServer][4] account.
 <pre>
   server.destroy(function () {
     // Server has now been destroyed
@@ -159,3 +164,5 @@ All of the node-cloudservers tests are written in [vows][2], and cover all of th
 [0]: http://docs.rackspacecloud.com/servers/api/cs-devguide-latest.pdf
 [1]: http://nodejitsu.com
 [2]: http://vowsjs.org
+[3]: http://blog.nodejitsu.com/nodejs-cloud-server-in-three-minutes
+[4]: http://www.rackspacecloud.com/1469-0-3-13.html

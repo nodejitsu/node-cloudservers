@@ -19,7 +19,7 @@ A client implementation for Rackspace CloudServers in node.js
 
 ## Usage
 
-[http://blog.nodejitsu.com/nodejs-cloud-server-in-three-minutes][4]
+[http://blog.nodejitsu.com/nodejs-cloud-server-in-three-minutes][3]
 
 The node-cloudservers library is compliant with the [Rackspace CloudServers API][0]. Using node-cloudservers is easy for a variety of scenarios: authenticating, getting flavors and images, creating servers, and working with servers.
 

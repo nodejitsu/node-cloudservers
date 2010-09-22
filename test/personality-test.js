@@ -60,22 +60,34 @@ vows.describe('node-cloudservers/personalities').addBatch({
       testServer.setWait({ status: 'ACTIVE' }, 5000, function () {
 
         var ssh  = spawn('ssh', [
+          '-i',
+          __dirname + '/files/testkey',
           '-o',
           'StrictHostKeyChecking no',
-          '-i' + __dirname + '/files/testkey',
           'root@' + testServer.addresses.public[0],
           'cat /root/.ssh/authorized_keys'
         ]);
+        
+        var e = function(err) {
+          console.log(err);
+        };
+        ssh.stderr.on("error", e);
+        ssh.stderr.on("data", function(chunk) {
+          data += chunk;
+        });
+        ssh.stdout.on("error", e);
         ssh.stdout.on("data", function(chunk) {
           data += chunk;
         });
+        ssh.on('error', e);
         ssh.on('exit', function() {
           self.callback(data)
         });
       });
     },
     "should connect without a password prompt": function(output) {
-      assert.equal(output, key);
+      console.log("OUTPUT", output);
+      assert.true(output.indexOf(key) > 0);
     }
   }
 }).addBatch({

@@ -1,5 +1,6 @@
 /*
- * authentication-test.js: Tests for rackspace cloudservers authentication
+ * personality-test.js: tests cloudserver's ability to add files
+ *                      to a server's filesystem during creationg
  *
  * (C) 2010 Charlie Robbins
  * MIT LICENSE
@@ -12,8 +13,7 @@ var path      = require('path'),
     spawn     = require('child_process').spawn,
     fs        = require('fs'),
     helpers   = require('./helpers'),
-    keyBuffer = fs.readFileSync(__dirname + "/files/testkey.pub"),
-    key64     = keyBuffer.toString('base64');
+    keyBuffer = fs.readFileSync(__dirname + "/files/testkey.pub");
 
 require.paths.unshift(path.join(__dirname, '..', 'lib'));
 
@@ -41,9 +41,9 @@ vows.describe('node-cloudservers/personalities').addBatch({
             name: 'create-personality-test',
             image: 49, // Ubuntu Lucid
             flavor: 1, // 256 server
-            "personality" : [{
+            personality : [{
               path     : "/root/.ssh/authorized_keys",
-              contents : key64
+              contents : keyBuffer.toString('base64')
             }]
           }, this.callback);
         },

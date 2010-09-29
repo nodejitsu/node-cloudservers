@@ -6,13 +6,14 @@
  *
  */
 
-var path    = require('path'),
-    vows    = require('vows'),
-    assert  = require('assert'),
-    spawn   = require('child_process').spawn,
-    fs      = require('fs'),
-    helpers = require('./helpers'),
-    key     = fs.readFileSync(__dirname + "/files/testkey.pub",'base64').toString("base64");
+var path      = require('path'),
+    vows      = require('vows'),
+    assert    = require('assert'),
+    spawn     = require('child_process').spawn,
+    fs        = require('fs'),
+    helpers   = require('./helpers'),
+    keyBuffer = fs.readFileSync(__dirname + "/files/testkey.pub"),
+    key64     = keyBuffer.toString('base64');
 
 require.paths.unshift(path.join(__dirname, '..', 'lib'));
 
@@ -42,7 +43,7 @@ vows.describe('node-cloudservers/personalities').addBatch({
             flavor: 1, // 256 server
             "personality" : [{
               path     : "/root/.ssh/authorized_keys",
-              contents : key
+              contents : key64
             }]
           }, this.callback);
         },
@@ -62,6 +63,7 @@ vows.describe('node-cloudservers/personalities').addBatch({
         var ssh  = spawn('ssh', [
           '-i',
           __dirname + '/files/testkey',
+          '-q',
           '-o',
           'StrictHostKeyChecking no',
           'root@' + testServer.addresses.public[0],
@@ -71,23 +73,21 @@ vows.describe('node-cloudservers/personalities').addBatch({
         var e = function(err) {
           console.log(err);
         };
+        
         ssh.stderr.on("error", e);
-        ssh.stderr.on("data", function(chunk) {
-          data += chunk;
-        });
+        ssh.stderr.on("data", function(chunk) {});
         ssh.stdout.on("error", e);
         ssh.stdout.on("data", function(chunk) {
-          data += chunk;
+          data += chunk.toString();
         });
         ssh.on('error', e);
         ssh.on('exit', function() {
-          self.callback(data)
+          self.callback(null, data)
         });
       });
     },
-    "should connect without a password prompt": function(output) {
-      console.log("OUTPUT", output);
-      assert.true(output.indexOf(key) > 0);
+    "should connect without a password prompt": function(err, output) {
+      assert.equal(keyBuffer.toString(), output);
     }
   }
 }).addBatch({

@@ -154,9 +154,22 @@ The 'updateBackup' method will update the backup schedule of the server on which
 3. Get the core 'createImage' operation working.
 
 ## Run Tests
-All of the node-cloudservers tests are written in [vows][2], and cover all of the use cases described above.
+All of the node-cloudservers tests are written in [vows][2], and cover all of the use cases described above. You will need to add your Rackspace API username and API key to lib/cloudservers/config.js before running tests.
 <pre>
   vows test/*-test.js --spec
+</pre>
+
+### Running Personality tests
+One common usage of the personality features in Rackspace CloudServers is to upload your own SSH keys for communicating with your new server. To run these tests you will need to generate a test key locally. 
+<pre>
+  $ cd /path/to/node-cloudservers
+  $ mkdir test/files
+  $ ssh-keygen -t rsa
+  Generating public/private rsa key pair.
+  Enter file in which to save the key (~/.ssh/id_rsa): /path/to/node-cloudservers/test/files/testkey
+  Enter passphrase (empty for no passphrase): 
+  Enter same passphrase again: 
+  Your identification has been saved in /path/to/node-cloudservers/test/files/testkey.
 </pre>
 
 #### Author: [Charlie Robbins](http://www.charlierobbins.com)

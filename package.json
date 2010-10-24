@@ -3,6 +3,9 @@
   "description": "A client implementation for Rackspace CloudServers in node.js",
   "version": "0.1.1",
   "author": "Charlie Robbins <charlie.robbins@gmail.com>",
+  "contributors": [
+    { "name": "Elijah Insua", "email": 'tmpvar@gmail.com' }, 
+  ],
   "repository": {
       "type": "git",
       "url": "http://github.com/nodejitsu/node-cloudservers.git" 

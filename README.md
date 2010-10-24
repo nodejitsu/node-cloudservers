@@ -61,7 +61,7 @@ If you manually create servers yourself via the [Rackspace CloudServer][4] manag
 
 <pre>
   var options = {
-    name: 'create-test-ids2',
+    name: 'test-server',
     image: 49, // Ubuntu Lucid
     flavor: 1, // 256 server
   };
@@ -71,6 +71,26 @@ If you manually create servers yourself via the [Rackspace CloudServer][4] manag
     });
   });
 </pre> 
+
+### Setting a 'personality' for a Server
+Rackspace CloudServers exposes an API that allows you to include an arbitrary number of files less than 10kb on a new server. Each file must be Base64 encoded. To use this functionality in node-cloudservers just include the path and contents of each file when creating a server:
+<pre>
+  
+  var options = {
+    name: 'test-server',
+    image: 49, // Ubuntu Lucid
+    flavor: 1, // 256 server
+    personality: [{
+      path: '/path/on/your/server/file.txt',
+      contents: new Buffer('hello world').toString('base64')
+    }]
+  };
+  cloudservers.setAuth(example.auth, function () {
+    cloudservers.createServer(options, function (server) { 
+      // Your server is now being built and will be ready shortly
+    });
+  });
+</pre>
 
 ### Waiting for Servers to Become 'Active'
 Once you've created a server, you can't work with it until it has become active. The node-cloudservers library is designed to allow you to wait for a server to meet a set of criteria:

@@ -173,6 +173,7 @@ One common usage of the personality features in Rackspace CloudServers is to upl
 </pre>
 
 #### Author: [Charlie Robbins](http://www.charlierobbins.com)
+#### Contributors: [Elijah Insua](http://github.com/tmpvar)
 
 [0]: http://docs.rackspacecloud.com/servers/api/cs-devguide-latest.pdf
 [1]: http://nodejitsu.com

@@ -42,6 +42,7 @@ vows.describe('node-cloudservers/servers').addBatch({
         cloudservers.setAuth(options.auth, this.callback);
       },
       "should return with 204": function (err, res) {
+        assert.isNull(err);
         assert.equal(res.statusCode, 204);
       }
     }
@@ -54,22 +55,21 @@ vows.describe('node-cloudservers/servers').addBatch({
           cloudservers.getImages(true, this.callback);
         },
         "should return the list of images": function (err, images) {
+          assert.isNull(err);
           testContext.images = images;
           images.forEach(function (image) {
             helpers.assertImageDetails(image);
           });
         }
       }
-    }
-  }
-}).addBatch({
-  "The node-cloudservers client": {
+    },
     "the getFlavors() method": {
       "with details": {
         topic: function () {
           cloudservers.getFlavors(true, this.callback);
         },
         "should return the list of flavors": function (err, flavors) {
+          assert.isNull(err);
           testContext.flavors = flavors;
           flavors.forEach(function (flavor) {
             helpers.assertFlavorDetails(flavor);
@@ -89,7 +89,8 @@ vows.describe('node-cloudservers/servers').addBatch({
             flavor: 1, // 256 server
           }, this.callback);
         },
-        "should return a valid server": function (server) {
+        "should return a valid server": function (err, server) {
+          assert.isNull(err);
           helpers.assertServerDetails(server);
         }
       },
@@ -101,7 +102,8 @@ vows.describe('node-cloudservers/servers').addBatch({
             flavor: 1, // 256 server
           }, this.callback);
         },
-        "should return a valid server": function (server) {
+        "should return a valid server": function (err, server) {
+          assert.isNull(err);
           helpers.assertServerDetails(server);
         }
       },
@@ -116,7 +118,8 @@ vows.describe('node-cloudservers/servers').addBatch({
             flavor: flavor,
           }, this.callback);
         },
-        "should return a valid server": function (server) {
+        "should return a valid server": function (err, server) {
+          assert.isNull(err);
           helpers.assertServerDetails(server);
         }
       }
@@ -130,6 +133,7 @@ vows.describe('node-cloudservers/servers').addBatch({
           cloudservers.getServers(this.callback);
         },
         "should return the list of servers": function (err, servers) {
+          assert.isNull(err);
           testContext.servers = servers;
           servers.forEach(function (server) {
             helpers.assertServer(server);
@@ -141,6 +145,7 @@ vows.describe('node-cloudservers/servers').addBatch({
           cloudservers.getServers(true, this.callback);
         },
         "should return the list of servers": function (err, servers) {
+          assert.isNull(err);
           servers.forEach(function (server) {
             helpers.assertServerDetails(server);
           });
@@ -155,6 +160,7 @@ vows.describe('node-cloudservers/servers').addBatch({
         cloudservers.getServer(testContext.servers[0].id, this.callback);
       },
       "should return a valid server": function (err, server) {
+        assert.isNull(err);
         helpers.assertServerDetails(server);
       }
     }
@@ -168,7 +174,8 @@ vows.describe('node-cloudservers/servers').addBatch({
             this.server0 = testContext.servers[0];
             this.server0.getAddresses(this.callback);
           },
-          "should return all valid addresses": function (addresses) {
+          "should return all valid addresses": function (err, addresses) {
+            assert.isNull(err);
             assert.include(addresses, 'public');
             assert.include(addresses, 'private');
             assert.include(this.server0.addresses, 'public');
@@ -180,7 +187,8 @@ vows.describe('node-cloudservers/servers').addBatch({
             this.server1 = testContext.servers[1];
             this.server1.getAddresses('public', this.callback);
           },
-          "should return all valid addresses": function (addresses) {
+          "should return all valid addresses": function (err, addresses) {
+            assert.isNull(err);
             assert.include(addresses, 'public');
             assert.isUndefined(addresses.private);
             assert.include(this.server1.addresses, 'public');
@@ -192,7 +200,8 @@ vows.describe('node-cloudservers/servers').addBatch({
             this.server2 = testContext.servers[2];
             this.server2.getAddresses('private', this.callback);
           },
-          "should return all valid addresses": function (addresses) {
+          "should return all valid addresses": function (err, addresses) {
+            assert.isNull(err);
             assert.include(addresses, 'private');
             assert.isUndefined(addresses.public);
             assert.include(this.server2.addresses, 'private');
@@ -210,7 +219,8 @@ vows.describe('node-cloudservers/servers').addBatch({
           this.server0 = testContext.servers[0];
           this.server0.getBackup(this.callback);
         },
-        "should return a valid backup schedule": function (backup) {
+        "should return a valid backup schedule": function (err, backup) {
+          assert.isNull(err);
           assert.isNotNull(backup);
           assert.include(backup, 'enabled');
           assert.include(backup, 'weekly');
@@ -226,6 +236,7 @@ vows.describe('node-cloudservers/servers').addBatch({
           });
         },
         "should respond with 204": function (err, res) {
+          assert.isNull(err);
           assert.equal(res.statusCode, 204);
         }
       },
@@ -244,6 +255,7 @@ vows.describe('node-cloudservers/servers').addBatch({
           });
         },
         "should respond with 202": function (err, res) {
+          assert.isNull(err);
           assert.equal(res.statusCode, 202);
         }
       }
@@ -260,6 +272,7 @@ vows.describe('node-cloudservers/servers').addBatch({
           });
         },
         "should respond with 202": function (err, res) {
+          assert.isNull(err);
           assert.equal(res.statusCode, 202); 
         }
       },
@@ -272,6 +285,7 @@ vows.describe('node-cloudservers/servers').addBatch({
           });
         },
         "should respond with 202": function (err, res) {
+          assert.isNull(err);
           assert.equal(res.statusCode, 202); 
         }
       },
@@ -284,6 +298,7 @@ vows.describe('node-cloudservers/servers').addBatch({
           });
         },
         "should respond with 202": function (err, res) {
+          assert.isNull(err);
           assert.isNull(err);
           if(!err) {
             assert.equal(res.statusCode, 202); 

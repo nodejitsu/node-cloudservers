@@ -264,6 +264,23 @@ vows.describe('node-cloudservers/servers').addBatch({
 }).addBatch({
   "The node-cloudservers client": {
     "with an instance of a Server": {
+      "the reboot() method": {
+        topic: function () {
+          var that = this;
+          testContext.servers[0].setWait({ status: 'ACTIVE' }, 5000, function () {
+            testContext.servers[0].reboot(that.callback);
+          });
+        },
+        "should respond with 202": function (err, res) {
+          assert.isNull(err);
+          assert.equal(res.statusCode, 202);
+        }
+      }
+    }
+  }
+}).addBatch({
+  "The node-cloudservers client": {
+    "with an instance of a Server": {
       "the destroy() method with the first server": {
         topic: function () {
           var that1 = this;

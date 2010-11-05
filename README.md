@@ -170,7 +170,7 @@ The 'updateBackup' method will update the backup schedule of the server on which
 ## Roadmap
 
 1. Get Server resize operations working: confirmResize, resize, revertResize.
-2. Get miscellaneous Server operations working: rebuild, reboot.  
+2. Get miscellaneous Server operations working: rebuild.  
 3. Get the core 'createImage' operation working.
 
 ## Run Tests

@@ -12,9 +12,30 @@ var path = require('path'),
     
 require.paths.unshift(path.join(__dirname, '..', 'lib'));
 
-var cloudservers = require('cloudservers');
+var testConfig, client, helpers = exports;
 
-var helpers = exports;
+var cloudservers = require('cloudservers');
+var util = require('util');
+
+
+helpers.createClient = function () {
+  if (!testConfig) helpers.loadConfig();
+  if (!client) client = cloudservers.createClient(testConfig);
+  
+  return client;
+};
+
+helpers.loadConfig = function () {
+  var config = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'test-config.json')).toString());
+  if (config.auth.username === 'test-username'
+      || config.auth.apiKey === 'test-apiKey') {
+    util.puts('Config file test-config.json must be updated with valid data before running tests');
+    process.exit(0);
+  }
+  
+  testConfig = config;
+  return config;
+};
 
 helpers.assertServer = function (server) {
   assert.instanceOf(server, cloudservers.Server);

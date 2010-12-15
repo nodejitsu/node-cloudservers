@@ -10,10 +10,14 @@ var path = require('path'),
     vows = require('vows'),
     helpers = require('./helpers'),
     assert = require('assert');
+    fs = require('fs');
+    
     
 require.paths.unshift(path.join(__dirname, '..', 'lib'));
 
 var cloudservers = require('cloudservers');
+var testData = {};
+var Client = helpers.createClient();
 
 var testContext = {};
 testContext.servers = [];
@@ -39,7 +43,7 @@ vows.describe('node-cloudservers/servers').addBatch({
     "when authenticated": {
       topic: function () {
         var options = cloudservers.config
-        cloudservers.setAuth(options.auth, this.callback);
+        Client.setAuth(Client.auth, this.callback);
       },
       "should return with 204": function (err, res) {
         assert.isNull(err);
@@ -52,7 +56,7 @@ vows.describe('node-cloudservers/servers').addBatch({
     "the getImages() method": {
       "with details": {
         topic: function () {
-          cloudservers.getImages(true, this.callback);
+          Client.getImages(true, this.callback);
         },
         "should return the list of images": function (err, images) {
           assert.isNull(err);
@@ -66,7 +70,7 @@ vows.describe('node-cloudservers/servers').addBatch({
     "the getFlavors() method": {
       "with details": {
         topic: function () {
-          cloudservers.getFlavors(true, this.callback);
+          Client.getFlavors(true, this.callback);
         },
         "should return the list of flavors": function (err, flavors) {
           assert.isNull(err);
@@ -83,7 +87,7 @@ vows.describe('node-cloudservers/servers').addBatch({
     "the create() method": {
       "with image and flavor ids": {
         topic: function () {
-          cloudservers.createServer({
+          Client.createServer({
             name: 'create-test-ids',
             image: 49, // Ubuntu Lucid
             flavor: 1, // 256 server

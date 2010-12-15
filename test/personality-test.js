@@ -13,7 +13,6 @@ var path      = require('path'),
     spawn     = require('child_process').spawn,
     fs        = require('fs'),
     helpers   = require('./helpers'),
-    keyBuffer = fs.readFileSync(__dirname + "/files/testkey.pub");
 
 require.paths.unshift(path.join(__dirname, '..', 'lib'));
 

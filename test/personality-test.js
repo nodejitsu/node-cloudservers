@@ -2,22 +2,22 @@
  * personality-test.js: tests cloudserver's ability to add files
  *                      to a server's filesystem during creationg
  *
- * (C) 2010 Charlie Robbins
+ * (C) 2010 Nodejitsu Inc.
  * MIT LICENSE
  *
  */
 
-var path      = require('path'),
-    vows      = require('vows'),
-    assert    = require('assert'),
-    spawn     = require('child_process').spawn,
-    fs        = require('fs'),
-    helpers   = require('./helpers'),
+require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
-require.paths.unshift(path.join(__dirname, '..', 'lib'));
-
-var cloudservers = require('cloudservers'),
-    testServer;
+var path = require('path'),
+    vows = require('vows'),
+    assert = require('assert'),
+    spawn = require('child_process').spawn,
+    fs = require('fs'),
+    helpers = require('./helpers'),
+    cloudservers = require('cloudservers');
+    
+var testServer;
 
 vows.describe('node-cloudservers/personalities').addBatch({
   "The node-cloudservers client": {

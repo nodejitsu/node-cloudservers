@@ -1,19 +1,18 @@
 /*
  * image-test.js: Tests for rackspace cloudservers image requests
  *
- * (C) 2010 Charlie Robbins
+ * (C) 2010 Nodejitsu Inc.
  * MIT LICENSE
  *
  */
+
+require.paths.unshift(path.join(__dirname, '..', 'lib'));
  
 var path = require('path'),
     vows = require('vows'),
-    helpers = require('./helpers'),
-    assert = require('assert');
-    
-require.paths.unshift(path.join(__dirname, '..', 'lib'));
-
-var cloudservers = require('cloudservers');
+    assert = require('assert'),
+    cloudservers = require('cloudservers'),
+    helpers = require('./helpers');
 
 var testContext = {};
 

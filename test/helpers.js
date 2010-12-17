@@ -1,22 +1,20 @@
 /*
  * helpers.js: Test helpers for node-cloudservers
  *
- * (C) 2010 Charlie Robbins
+ * (C) 2010 Nodejitsu Inc.
  * MIT LICENSE
  *
  */
+
+require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
  
 var path = require('path'),
     vows = require('vows'),
-    assert = require('assert');
+    util = require('util'),
+    assert = require('assert'),
+    cloudservers = require('cloudservers');
     
-require.paths.unshift(path.join(__dirname, '..', 'lib'));
-
 var testConfig, client, helpers = exports;
-
-var cloudservers = require('cloudservers');
-var util = require('util');
-
 
 helpers.createClient = function () {
   if (!testConfig) helpers.loadConfig();

@@ -1,19 +1,19 @@
 /*
  * authentication-test.js: Tests for rackspace cloudservers authentication
  *
- * (C) 2010 Charlie Robbins
+ * (C) 2010 Nodejitsu Inc.
  * MIT LICENSE
  *
  */
- 
+
+require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
+
 var path = require('path'),
     vows = require('vows'),
-    assert = require('assert');
-    
-require.paths.unshift(path.join(__dirname, '..', 'lib'));
+    assert = require('assert'),
+    cloudservers = require('cloudservers'),
+    helpers = require('./helpers');
 
-var cloudservers = require('cloudservers');
-    
 vows.describe('node-cloudservers/authentication').addBatch({
   "The node-cloudservers client": {
     "should have core methods defined": function() {

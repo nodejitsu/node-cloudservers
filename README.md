@@ -44,13 +44,13 @@ There are several entities in the [Rackspace CloudServer][4] ecosystem: images, 
   cloudservers.setAuth(example.auth, function () {
     cloudservers.getFlavors(function (err, flavors) {
       // Dump the flavors we have just received
-      sys.inspect(flavors);
+      util.inspect(flavors);
       example.flavors = flavors;
     });
 
     cloudservers.getImages(function (err, images) {
       // Dump the flavors we have just received
-      sys.inspect(images);
+      util.inspect(images);
       example.images = images;
     });
   });
@@ -105,7 +105,7 @@ If you have already created a some [Rackspace CloudServer][4] instances it is ea
 <pre>
   cloudservers.getServers(true, function (servers) {
     // Inspect the servers that have been returned
-    sys.inspect(servers);
+    util.inspect(servers);
   });
 </pre>
 
@@ -132,7 +132,7 @@ The 'getAddresses' method takes a callback which has the set of the valid IP add
 <pre>
   server.getAddresses(function (addresses) {
     // Inspect the addresses that were returned
-    sys.inspect(addresses);
+    util.inspect(addresses);
   });
 </pre>
 
@@ -141,7 +141,7 @@ The 'getBackup' method will get the backup schedule for the Server.
 <pre>
   server.getBackup(function (backup) {
     // Inspect the backup schedule that was returned
-    sys.inspect(backup);
+    util.inspect(backup);
   });
 </pre>
 
@@ -150,7 +150,7 @@ The 'getDetails' method will get the server with all details.
 <pre>
   server.getDetails(function (server) {
     // Inspect the server that was returned
-    sys.inspect(server);
+    util.inspect(server);
   });
 </pre>
 

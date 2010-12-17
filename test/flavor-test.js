@@ -1,20 +1,19 @@
 /*
  * flavor-test.js: Tests for rackspace cloudservers flavor requests
  *
- * (C) 2010 Charlie Robbins
+ * (C) 2010 Nodejitsu Inc.
  * MIT LICENSE
  *
  */
+
+require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
  
 var path = require('path'),
     vows = require('vows'),
-    helpers = require('./helpers'),
-    assert = require('assert');
+    assert = require('assert'),
+    cloudservers = require('cloudservers'),
+    helpers = require('./helpers');
     
-require.paths.unshift(path.join(__dirname, '..', 'lib'));
-
-var cloudservers = require('cloudservers');
-
 var testContext = {};
 
 vows.describe('node-cloudservers/flavors').addBatch({

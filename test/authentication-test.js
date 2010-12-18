@@ -43,7 +43,7 @@ vows.describe('node-cloudservers/authentication').addBatch({
     "with a valid username and api key": {
       topic: function () {
         var options = Client.config;
-        Client.setAuth(options.auth, this.callback);
+        Client.setAuth(options, this.callback);
       },
       "should respond with 204 and appropriate headers": function (err, res) {
         assert.equal(res.statusCode, 204); 

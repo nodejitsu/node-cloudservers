@@ -43,7 +43,7 @@ vows.describe('node-cloudservers/servers').addBatch({
     "when authenticated": {
       topic: function () {
         var options = cloudservers.config
-        Client.setAuth(Client.auth, this.callback);
+        Client.setAuth(Client.config, this.callback);
       },
       "should return with 204": function (err, res) {
         assert.isNull(err);

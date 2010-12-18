@@ -11,6 +11,7 @@ require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 var path = require('path'),
     vows = require('vows'),
     util = require('util'),
+    fs = require('fs'),
     assert = require('assert'),
     cloudservers = require('cloudservers');
     

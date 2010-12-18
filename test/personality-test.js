@@ -28,7 +28,7 @@ vows.describe('node-cloudservers/personalities').addBatch({
     "when authenticated": {
       topic: function () {
         var options = Client.config
-        Client.setAuth(options.auth, this.callback);
+        Client.setAuth(options, this.callback);
       },
       "should return with 204": function (err, res) {
         assert.equal(res.statusCode, 204);
@@ -46,7 +46,7 @@ vows.describe('node-cloudservers/personalities').addBatch({
             flavor: 1, // 256 server
             personality : [{
               path     : "/root/.ssh/authorized_keys",
-              contents : keyBuffer.toString('base64')
+              contents : 'keyBuffer'.toString('base64')
             }]
           }, this.callback);
         },
@@ -60,7 +60,7 @@ vows.describe('node-cloudservers/personalities').addBatch({
 }).addBatch({
   "connect via ssh" : {
     topic : function() {
-      var data = "", self = this
+      var data = "", self = this;
       testServer.setWait({ status: 'ACTIVE' }, 5000, function () {
 
         var ssh  = spawn('ssh', [
@@ -90,7 +90,7 @@ vows.describe('node-cloudservers/personalities').addBatch({
       });
     },
     "should connect without a password prompt": function(err, output) {
-      assert.equal(keyBuffer.toString(), output);
+      assert.equal('keyBuffer'.toString(), output);
     }
   }
 }).addBatch({

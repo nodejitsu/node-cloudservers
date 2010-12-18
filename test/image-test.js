@@ -26,7 +26,7 @@ vows.describe('node-cloudservers/images').addBatch({
     "when authenticated": {
       topic: function () {
         var options = Client.config
-        Client.setAuth(options.auth, this.callback);
+        Client.setAuth(options, this.callback);
       },
       "should return with 204": function (err, res) {
         assert.equal(res.statusCode, 204);

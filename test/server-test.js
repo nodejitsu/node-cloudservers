@@ -9,7 +9,7 @@
 var path = require('path'),
     vows = require('vows'),
     helpers = require('./helpers'),
-    assert = require('assert');
+    assert = require('assert'),
     fs = require('fs');
     
     
@@ -100,7 +100,7 @@ vows.describe('node-cloudservers/servers').addBatch({
       },
       "with image and flavor ids a second time": {
         topic: function () {
-          cloudservers.createServer({
+          Client.createServer({
             name: 'create-test-ids2',
             image: 49, // Ubuntu Lucid
             flavor: 1, // 256 server
@@ -116,7 +116,7 @@ vows.describe('node-cloudservers/servers').addBatch({
           var image = findImage('Ubuntu 10.04 LTS (lucid)');
           var flavor = findFlavor('256 server');
 
-          cloudservers.createServer({
+          Client.createServer({
             name: 'create-test-objects',
             image: image,
             flavor: flavor,
@@ -134,7 +134,7 @@ vows.describe('node-cloudservers/servers').addBatch({
     "the getServers() method": {
       "with no details": {
         topic: function () {
-          cloudservers.getServers(this.callback);
+          Client.getServers(this.callback);
         },
         "should return the list of servers": function (err, servers) {
           assert.isNull(err);
@@ -146,7 +146,7 @@ vows.describe('node-cloudservers/servers').addBatch({
       },
       "with details": {
         topic: function () {
-          cloudservers.getServers(true, this.callback);
+          Client.getServers(true, this.callback);
         },
         "should return the list of servers": function (err, servers) {
           assert.isNull(err);
@@ -161,7 +161,7 @@ vows.describe('node-cloudservers/servers').addBatch({
   "The node-cloudservers client": {
     "the getServer() method": {
       topic: function () {
-        cloudservers.getServer(testContext.servers[0].id, this.callback);
+        Client.getServer(testContext.servers[0].id, this.callback);
       },
       "should return a valid server": function (err, server) {
         assert.isNull(err);

@@ -6,13 +6,17 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
- 
-var path = require('path'),
-    vows = require('vows'),
-    assert = require('assert'),
-    cloudservers = require('cloudservers'),
-    helpers = require('./helpers');
+ var path = require('path'),
+     vows = require('vows'),
+     assert = require('assert'),
+     helpers = require('./helpers');
+     fs = require('fs');
+
+ require.paths.unshift(path.join(__dirname, '..', 'lib'));
+
+ var testData = {};
+     cloudservers = require('cloudservers'),
+     Client = helpers.createClient();
     
 var testContext = {};
 
@@ -20,8 +24,8 @@ vows.describe('node-cloudservers/flavors').addBatch({
   "The node-cloudservers client": {
     "when authenticated": {
       topic: function () {
-        var options = cloudservers.config
-        cloudservers.setAuth(options.auth, this.callback);
+        var options = Client.config
+        Client.setAuth(options.auth, this.callback);
       },
       "should return with 204": function (err, res) {
         assert.equal(res.statusCode, 204);
@@ -33,7 +37,7 @@ vows.describe('node-cloudservers/flavors').addBatch({
     "the getFlavors() method": {
       "with no details": {
         topic: function () {
-          cloudservers.getFlavors(this.callback);
+          Client.getFlavors(this.callback);
         },
         "should return the list of flavors": function (err, flavors) {
           testContext.flavors = flavors;
@@ -44,7 +48,7 @@ vows.describe('node-cloudservers/flavors').addBatch({
       },
       "with details": {
         topic: function () {
-          cloudservers.getFlavors(true, this.callback);
+          Client.getFlavors(true, this.callback);
         },
         "should return the list of flavors": function (err, flavors) {
           flavors.forEach(function (flavor) {
@@ -58,7 +62,7 @@ vows.describe('node-cloudservers/flavors').addBatch({
   "The node-cloudservers client": {
     "the getFlavor() method": {
       topic: function () {
-        cloudservers.getFlavor(testContext.flavors[0].id, this.callback);
+        Client.getFlavor(testContext.flavors[0].id, this.callback);
       },
       "should return a valid flavor": function (err, flavor) {
         helpers.assertFlavorDetails(flavor);

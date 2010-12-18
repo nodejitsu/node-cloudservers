@@ -7,24 +7,28 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
+ require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
-var path = require('path'),
-    vows = require('vows'),
-    assert = require('assert'),
-    spawn = require('child_process').spawn,
-    fs = require('fs'),
-    helpers = require('./helpers'),
-    cloudservers = require('cloudservers');
-    
+ var path = require('path'),
+     vows = require('vows'),
+     assert = require('assert'),
+     spawn     = require('child_process').spawn,
+     helpers = require('./helpers');
+     fs = require('fs');
+
+ require.paths.unshift(path.join(__dirname, '..', 'lib'));
+     var testData = {};
+     cloudservers = require('cloudservers'),
+     Client = helpers.createClient();
+
 var testServer;
 
 vows.describe('node-cloudservers/personalities').addBatch({
   "The node-cloudservers client": {
     "when authenticated": {
       topic: function () {
-        var options = cloudservers.config
-        cloudservers.setAuth(options.auth, this.callback);
+        var options = Client.config
+        Client.setAuth(options.auth, this.callback);
       },
       "should return with 204": function (err, res) {
         assert.equal(res.statusCode, 204);
@@ -36,7 +40,7 @@ vows.describe('node-cloudservers/personalities').addBatch({
     "the create() method": {
       "with image and flavor ids": {
         topic: function () {
-          cloudservers.createServer({
+          Client.createServer({
             name: 'create-personality-test',
             image: 49, // Ubuntu Lucid
             flavor: 1, // 256 server
@@ -56,7 +60,7 @@ vows.describe('node-cloudservers/personalities').addBatch({
 }).addBatch({
   "connect via ssh" : {
     topic : function() {
-      var data = "", self = this;
+      var data = "", self = this
       testServer.setWait({ status: 'ACTIVE' }, 5000, function () {
 
         var ssh  = spawn('ssh', [

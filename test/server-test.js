@@ -5,21 +5,20 @@
  * MIT LICENSE
  *
  */
+
+require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
  
-var path = require('path'),
+var fs = require('fs'),
+    path = require('path'),
     vows = require('vows'),
-    helpers = require('./helpers'),
     assert = require('assert'),
-    fs = require('fs');
-    
-    
-require.paths.unshift(path.join(__dirname, '..', 'lib'));
+    cloudservers = require('cloudservers'),
+    helpers = require('./helpers');    
 
-var cloudservers = require('cloudservers');
-var testData = {};
-var Client = helpers.createClient();
+var testData = {}, 
+    testContext = {},
+    client = helpers.createClient();
 
-var testContext = {};
 testContext.servers = [];
 
 var findImage = function (name) {
@@ -40,23 +39,10 @@ var findFlavor = function (name) {
 
 vows.describe('node-cloudservers/servers').addBatch({
   "The node-cloudservers client": {
-    "when authenticated": {
-      topic: function () {
-        var options = cloudservers.config
-        Client.setAuth(Client.config, this.callback);
-      },
-      "should return with 204": function (err, res) {
-        assert.isNull(err);
-        assert.equal(res.statusCode, 204);
-      }
-    }
-  }
-}).addBatch({
-  "The node-cloudservers client": {
     "the getImages() method": {
       "with details": {
         topic: function () {
-          Client.getImages(true, this.callback);
+          client.getImages(true, this.callback);
         },
         "should return the list of images": function (err, images) {
           assert.isNull(err);
@@ -70,7 +56,7 @@ vows.describe('node-cloudservers/servers').addBatch({
     "the getFlavors() method": {
       "with details": {
         topic: function () {
-          Client.getFlavors(true, this.callback);
+          client.getFlavors(true, this.callback);
         },
         "should return the list of flavors": function (err, flavors) {
           assert.isNull(err);
@@ -87,7 +73,7 @@ vows.describe('node-cloudservers/servers').addBatch({
     "the create() method": {
       "with image and flavor ids": {
         topic: function () {
-          Client.createServer({
+          client.createServer({
             name: 'create-test-ids',
             image: 49, // Ubuntu Lucid
             flavor: 1, // 256 server
@@ -100,7 +86,7 @@ vows.describe('node-cloudservers/servers').addBatch({
       },
       "with image and flavor ids a second time": {
         topic: function () {
-          Client.createServer({
+          client.createServer({
             name: 'create-test-ids2',
             image: 49, // Ubuntu Lucid
             flavor: 1, // 256 server
@@ -113,10 +99,10 @@ vows.describe('node-cloudservers/servers').addBatch({
       },
       "with image and flavor instances": {
         topic: function () {
-          var image = findImage('Ubuntu 10.04 LTS (lucid)');
-          var flavor = findFlavor('256 server');
+          var image = findImage('Ubuntu 10.04 LTS (lucid)'),
+              flavor = findFlavor('256 server');
 
-          Client.createServer({
+          client.createServer({
             name: 'create-test-objects',
             image: image,
             flavor: flavor,
@@ -134,7 +120,7 @@ vows.describe('node-cloudservers/servers').addBatch({
     "the getServers() method": {
       "with no details": {
         topic: function () {
-          Client.getServers(this.callback);
+          client.getServers(this.callback);
         },
         "should return the list of servers": function (err, servers) {
           assert.isNull(err);
@@ -146,7 +132,7 @@ vows.describe('node-cloudservers/servers').addBatch({
       },
       "with details": {
         topic: function () {
-          Client.getServers(true, this.callback);
+          client.getServers(true, this.callback);
         },
         "should return the list of servers": function (err, servers) {
           assert.isNull(err);
@@ -161,7 +147,7 @@ vows.describe('node-cloudservers/servers').addBatch({
   "The node-cloudservers client": {
     "the getServer() method": {
       topic: function () {
-        Client.getServer(testContext.servers[0].id, this.callback);
+        client.getServer(testContext.servers[0].id, this.callback);
       },
       "should return a valid server": function (err, server) {
         assert.isNull(err);

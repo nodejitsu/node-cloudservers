@@ -8,32 +8,31 @@
 
 require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
-var path = require('path'),
+var fs = require('fs'),
+    path = require('path'),
     vows = require('vows'),
     assert = require('assert'),
-    helpers = require('./helpers');
-    fs = require('fs');
-
-var testData = {};
     cloudservers = require('cloudservers'),
-    Client = helpers.createClient();
+    helpers = require('./helpers');
     
-
+var testData = {}, 
+    client = helpers.createClient();
+    
 vows.describe('node-cloudservers/authentication').addBatch({
   "The node-cloudservers client": {
     "should have core methods defined": function() {
-      assert.isObject(Client.config.auth);
-      assert.include(Client.config.auth, 'username');
-      assert.include(Client.config.auth, 'apiKey');
+      assert.isObject(client.config.auth);
+      assert.include(client.config.auth, 'username');
+      assert.include(client.config.auth, 'apiKey');
       
-      assert.isFunction(Client.setAuth);
-      assert.isFunction(Client.getServer);
-      assert.isFunction(Client.getServers);
-      assert.isFunction(Client.createServer);
+      assert.isFunction(client.setAuth);
+      assert.isFunction(client.getServer);
+      assert.isFunction(client.getServers);
+      assert.isFunction(client.createServer);
     },
     "the getVersion() method": {
       topic: function () {
-        Client.getVersion(this.callback);
+        client.getVersion(this.callback);
       },
       "should return the proper version": function (versions) {
         assert.isArray(versions);
@@ -42,8 +41,7 @@ vows.describe('node-cloudservers/authentication').addBatch({
     },
     "with a valid username and api key": {
       topic: function () {
-        var options = Client.config;
-        Client.setAuth(options, this.callback);
+        client.setAuth(this.callback);
       },
       "should respond with 204 and appropriate headers": function (err, res) {
         assert.equal(res.statusCode, 204); 
@@ -54,7 +52,7 @@ vows.describe('node-cloudservers/authentication').addBatch({
         assert.include(res.headers, 'x-auth-token');
       },
       "should update the config with appropriate urls": function (err, res) {
-        var config = Client.config;
+        var config = client.config;
         assert.equal(res.headers['x-server-management-url'], config.serverUrl);
         assert.equal(res.headers['x-storage-url'], config.storageUrl);
         assert.equal(res.headers['x-cdn-management-url'], config.cdnUrl);
@@ -63,11 +61,14 @@ vows.describe('node-cloudservers/authentication').addBatch({
     },
     "with an invalid username and api key": {
       topic: function () {
-        var options = { "auth": {
-          "username": "fake",
-          "apiKey": "data"
-        }}
-        Client.setAuth(options, this.callback);
+        var badClient = cloudservers.createClient({ 
+          "auth": {
+            "username": "fake",
+            "apiKey": "data"
+          }
+        });
+        
+        badClient.setAuth(this.callback);
       },
       "should respond with 401": function (err, res) {
         assert.equal(res.statusCode, 401);
@@ -78,7 +79,7 @@ vows.describe('node-cloudservers/authentication').addBatch({
   "The node-cloudservers client": {
     "the getLimits() method": {
       topic: function () {
-        Client.getLimits(this.callback); 
+        client.getLimits(this.callback); 
       },
       "should return the proper limits": function (limits) {
         assert.isNotNull(limits);

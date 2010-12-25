@@ -7,46 +7,32 @@
  *
  */
 
- require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
+require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
- var path = require('path'),
-     vows = require('vows'),
-     assert = require('assert'),
-     spawn     = require('child_process').spawn,
-     helpers = require('./helpers');
-     fs = require('fs');
+var fs = require('fs'),
+    path = require('path'),
+    vows = require('vows'),
+    assert = require('assert'),
+    cloudservers = require('cloudservers'),
+    spawn = require('child_process').spawn,
+    helpers = require('./helpers'),
+    keyBuffer = fs.readFileSync(__dirname + "/files/testkey.pub");
 
- require.paths.unshift(path.join(__dirname, '..', 'lib'));
-     var testData = {};
-     cloudservers = require('cloudservers'),
-     Client = helpers.createClient();
-
-var testServer;
+var testServer, testData = {}, 
+    client = helpers.createClient();
 
 vows.describe('node-cloudservers/personalities').addBatch({
-  "The node-cloudservers client": {
-    "when authenticated": {
-      topic: function () {
-        var options = Client.config
-        Client.setAuth(options, this.callback);
-      },
-      "should return with 204": function (err, res) {
-        assert.equal(res.statusCode, 204);
-      }
-    }
-  }
-}).addBatch({
   "The node-cloudservers client": {
     "the create() method": {
       "with image and flavor ids": {
         topic: function () {
-          Client.createServer({
+          client.createServer({
             name: 'create-personality-test',
             image: 49, // Ubuntu Lucid
             flavor: 1, // 256 server
             personality : [{
               path     : "/root/.ssh/authorized_keys",
-              contents : 'keyBuffer'.toString('base64')
+              contents : keyBuffer.toString('base64')
             }]
           }, this.callback);
         },
@@ -62,7 +48,6 @@ vows.describe('node-cloudservers/personalities').addBatch({
     topic : function() {
       var data = "", self = this;
       testServer.setWait({ status: 'ACTIVE' }, 5000, function () {
-
         var ssh  = spawn('ssh', [
           '-i',
           __dirname + '/files/testkey',
@@ -90,7 +75,7 @@ vows.describe('node-cloudservers/personalities').addBatch({
       });
     },
     "should connect without a password prompt": function(err, output) {
-      assert.equal('keyBuffer'.toString(), output);
+      assert.equal(output, keyBuffer.toString());
     }
   }
 }).addBatch({

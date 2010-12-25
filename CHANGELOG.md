@@ -1,6 +1,6 @@
 ## ChangeLog for: node-cloudservers
 
-### Version 0.2.0
+### Version 0.2.0 - 12/25/2010
 - Improved test coverage
 - Pushed test config out of lib/ to test/data/test-config.json
 

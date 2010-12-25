@@ -25,15 +25,24 @@ helpers.createClient = function () {
 };
 
 helpers.loadConfig = function () {
-  var config = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'test-config.json')).toString());
-  if (config.auth.username === 'test-username'
-      || config.auth.apiKey === 'test-apiKey') {
-    util.puts('Config file test-config.json must be updated with valid data before running tests');
+  try {
+    var configFile = path.join(__dirname, 'data', 'test-config.json'),
+        stats = fs.statSync(configFile),
+        config = JSON.parse(fs.readFileSync(configFile).toString());
+    
+    if (config.auth.username === 'test-username'
+        || config.auth.apiKey === 'test-apiKey') {
+      util.puts('Config file test/data/test-config.json must be created with valid data before running tests');
+      process.exit(0);
+    }
+
+    testConfig = config;
+    return config;
+  }
+  catch (ex) {
+    util.puts('Config file test/data/test-config.json must be created with valid data before running tests');
     process.exit(0);
   }
-  
-  testConfig = config;
-  return config;
 };
 
 helpers.assertServer = function (server) {

@@ -16,7 +16,7 @@ var fs = require('fs'),
     cloudservers = require('cloudservers'),
     spawn = require('child_process').spawn,
     helpers = require('./helpers'),
-    keyBuffer = fs.readFileSync(__dirname + "/files/testkey.pub");
+    keyBuffer = fs.readFileSync(__dirname + "/data/testkey.pub");
 
 var testServer, testData = {}, 
     client = helpers.createClient();
@@ -50,7 +50,7 @@ vows.describe('node-cloudservers/personalities').addBatch({
       testServer.setWait({ status: 'ACTIVE' }, 5000, function () {
         var ssh  = spawn('ssh', [
           '-i',
-          __dirname + '/files/testkey',
+          __dirname + '/data/testkey',
           '-q',
           '-o',
           'StrictHostKeyChecking no',

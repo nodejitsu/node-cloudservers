@@ -13,7 +13,8 @@
   },
   "keywords": ["cloud computing", "api", "rackspace cloud", "cloudservers"],
   "dependencies": {
-    "request": ">= 0.10.0"
+    "request": ">= 0.10.0",
+    "vows": ">= 0.5.2"
   },
   "main": "./lib/cloudservers",
   "scripts": { "test": "vows test/*-test.js --spec" },

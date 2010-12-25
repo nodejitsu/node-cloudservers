@@ -16,43 +16,38 @@ A client implementation for Rackspace CloudServers in node.js
 
 ### [Getting Rackspace Account][4]
 
-
 ## Usage
 
 [http://blog.nodejitsu.com/nodejs-cloud-server-in-three-minutes][3]
 
 The node-cloudservers library is compliant with the [Rackspace CloudServers API][0]. Using node-cloudservers is easy for a variety of scenarios: authenticating, getting flavors and images, creating servers, and working with servers.
 
-### Authenticating
-Before we can do anything with cloudservers, we have to authenticate. Authenticating is simple:
+### Getting Started
+Before we can do anything with cloudfiles, we have to create a client with valid credentials. Cloudservers will authenticate for you automatically: 
 <pre>
   var cloudservers = require('cloudservers');
-  var example = {
+  var config = {
     auth : {
       username: 'your-username',
       apiKey: 'your-api-key'
     }
   };
-  cloudservers.setAuth(example.auth, function () {
-    // Work with Rackspace Cloudservers from here
-  });
+  var client = cloudservers.createClient(config);
 </pre>
 
 ### Getting Flavors and Images
 There are several entities in the [Rackspace CloudServer][4] ecosystem: images, flavors, and servers. Both the getFlavors and getImages methods take an optional first parameter which when set to true will return more details for the objects returned. Here's how to get the list of all available flavors and images associated with your Rackspace account:
 <pre>
-  cloudservers.setAuth(example.auth, function () {
-    cloudservers.getFlavors(function (err, flavors) {
-      // Dump the flavors we have just received
-      util.inspect(flavors);
-      example.flavors = flavors;
-    });
+  client.getFlavors(function (err, flavors) {
+    // Dump the flavors we have just received
+    util.inspect(flavors);
+    example.flavors = flavors;
+  });
 
-    cloudservers.getImages(function (err, images) {
-      // Dump the flavors we have just received
-      util.inspect(images);
-      example.images = images;
-    });
+  client.getImages(function (err, images) {
+    // Dump the flavors we have just received
+    util.inspect(images);
+    example.images = images;
   });
 </pre>
 
@@ -65,17 +60,15 @@ If you manually create servers yourself via the [Rackspace CloudServer][4] manag
     image: 49, // Ubuntu Lucid
     flavor: 1, // 256 server
   };
-  cloudservers.setAuth(example.auth, function () {
-    cloudservers.createServer(options, function (server) { 
-      // Your server is now being built and will be ready shortly
-    });
+
+  client.createServer(options, function (server) { 
+    // Your server is now being built and will be ready shortly
   });
 </pre> 
 
 ### Setting a 'personality' for a Server
 Rackspace CloudServers exposes an API that allows you to include an arbitrary number of files less than 10kb on a new server. Each file must be Base64 encoded. To use this functionality in node-cloudservers just include the path and contents of each file when creating a server:
 <pre>
-  
   var options = {
     name: 'test-server',
     image: 49, // Ubuntu Lucid
@@ -85,10 +78,9 @@ Rackspace CloudServers exposes an API that allows you to include an arbitrary nu
       contents: new Buffer('hello world').toString('base64')
     }]
   };
-  cloudservers.setAuth(example.auth, function () {
-    cloudservers.createServer(options, function (server) { 
-      // Your server is now being built and will be ready shortly
-    });
+  
+  client.createServer(options, function (server) { 
+    // Your server is now being built and will be ready shortly
   });
 </pre>
 
@@ -103,7 +95,7 @@ Once you've created a server, you can't work with it until it has become active.
 ### Working with Servers
 If you have already created a some [Rackspace CloudServer][4] instances it is easy to get them from your account with node-cloudservers with the getServers method. This method takes an optional first parameter that when set to true will return all details for the servers:
 <pre>
-  cloudservers.getServers(true, function (servers) {
+  client.getServers(true, function (servers) {
     // Inspect the servers that have been returned
     util.inspect(servers);
   });
@@ -174,7 +166,17 @@ The 'updateBackup' method will update the backup schedule of the server on which
 3. Get the core 'createImage' operation working.
 
 ## Run Tests
-All of the node-cloudservers tests are written in [vows][2], and cover all of the use cases described above. You will need to add your Rackspace API username and API key to lib/cloudservers/config.js before running tests.
+All of the node-cloudservers tests are written in [vows][2], and cover all of the use cases described above. You will need to add your Rackspace API username and API key to test/data/test-config.json before running tests:
+<pre>
+  {
+    "auth": {
+      "username": "your-username",
+      "apiKey": "your-apikey"
+    }
+  }
+</pre>
+
+Once you have valid Rackspace credentials you can run tests with [vows][2]:
 <pre>
   vows test/*-test.js --spec
 </pre>
@@ -183,17 +185,17 @@ All of the node-cloudservers tests are written in [vows][2], and cover all of th
 One common usage of the personality features in Rackspace CloudServers is to upload your own SSH keys for communicating with your new server. To run these tests you will need to generate a test key locally. 
 <pre>
   $ cd /path/to/node-cloudservers
-  $ mkdir test/files
+  $ mkdir test/data
   $ ssh-keygen -t rsa
   Generating public/private rsa key pair.
-  Enter file in which to save the key (~/.ssh/id_rsa): /path/to/node-cloudservers/test/files/testkey
+  Enter file in which to save the key (~/.ssh/id_rsa): /path/to/node-cloudservers/test/data/testkey
   Enter passphrase (empty for no passphrase): 
   Enter same passphrase again: 
-  Your identification has been saved in /path/to/node-cloudservers/test/files/testkey.
+  Your identification has been saved in /path/to/node-cloudservers/test/data/testkey.
 </pre>
 
 #### Author: [Charlie Robbins](http://www.charlierobbins.com)
-#### Contributors: [Elijah Insua](http://github.com/tmpvar)
+#### Contributors: [Elijah Insua](http://github.com/tmpvar) [Matthew Bergman](http://github.com/fotoverite)
 
 [0]: http://docs.rackspacecloud.com/servers/api/cs-devguide-latest.pdf
 [1]: http://nodejitsu.com

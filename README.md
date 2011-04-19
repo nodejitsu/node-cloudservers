@@ -9,7 +9,7 @@ A client implementation for Rackspace CloudServers in node.js
   curl http://npmjs.org/install.sh | sh
 </pre>
 
-### Installing http-agent
+### Installing cloudservers
 <pre>
   npm install cloudservers
 </pre>

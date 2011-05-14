@@ -185,13 +185,13 @@ Once you have valid Rackspace credentials you can run tests with [vows][2]:
 One common usage of the personality features in Rackspace CloudServers is to upload your own SSH keys for communicating with your new server. To run these tests you will need to generate a test key locally. 
 <pre>
   $ cd /path/to/node-cloudservers
-  $ mkdir test/data
+  $ mkdir test/fixtures
   $ ssh-keygen -t rsa
   Generating public/private rsa key pair.
-  Enter file in which to save the key (~/.ssh/id_rsa): /path/to/node-cloudservers/test/data/testkey
+  Enter file in which to save the key (~/.ssh/id_rsa): /path/to/node-cloudservers/test/fixtures/testkey
   Enter passphrase (empty for no passphrase): 
   Enter same passphrase again: 
-  Your identification has been saved in /path/to/node-cloudservers/test/data/testkey.
+  Your identification has been saved in /path/to/node-cloudservers/test/fixtures/testkey.
 </pre>
 
 #### Author: [Charlie Robbins](http://www.charlierobbins.com)

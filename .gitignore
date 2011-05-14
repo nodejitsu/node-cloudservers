@@ -1,4 +1,4 @@
-/test/files
-/test/files/*
-/test/data
-/test/data/*
+/test/fixtures/*
+/node_modules
+/node_modules/*
+npm-debug.log

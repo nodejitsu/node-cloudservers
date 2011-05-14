@@ -26,7 +26,7 @@ helpers.createClient = function () {
 
 helpers.loadConfig = function () {
   try {
-    var configFile = path.join(__dirname, 'data', 'test-config.json'),
+    var configFile = path.join(__dirname, 'fixtures', 'test-config.json'),
         stats = fs.statSync(configFile),
         config = JSON.parse(fs.readFileSync(configFile).toString());
     

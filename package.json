@@ -20,5 +20,5 @@
   },
   "main": "./lib/cloudservers",
   "scripts": { "test": "vows test/*-test.js --spec" },
-  "engines": { "node": "0.4.x" }
+  "engines": { "node": "0.4.x || 0.5.x" }
 }

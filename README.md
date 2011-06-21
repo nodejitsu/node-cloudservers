@@ -2,6 +2,11 @@
 
 A client implementation for Rackspace CloudServers in node.js
 
+<img 
+  alt= "This project is built and supported by Nodejitsu. If it does not work as expected, please let us know and we will fix it"
+  src="https://github.com/nodejitsu/node-cloudservers/raw/master/assets/made-by-nodejitsu.png"/></img>
+
+
 ## Installation
 
 ### Installing npm (node package manager)

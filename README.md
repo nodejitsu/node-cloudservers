@@ -2,8 +2,6 @@
 
 A client implementation for Rackspace CloudServers in node.js
 
-<img alt= "This project is built and supported by Nodejitsu. If it does not work as expected, please let us know and we will fix it" src="https://github.com/nodejitsu/node-cloudservers/raw/master/assets/support-by-nodejitsu.png"/></img>
-
 
 ## Installation
 
@@ -196,6 +194,9 @@ One common usage of the personality features in Rackspace CloudServers is to upl
   Enter same passphrase again: 
   Your identification has been saved in /path/to/node-cloudservers/test/fixtures/testkey.
 </pre>
+
+<img alt= "This project is built and supported by Nodejitsu. If it does not work as expected, please let us know and we will fix it" src="https://github.com/nodejitsu/node-cloudservers/raw/master/assets/support-by-nodejitsu.png"/></img>
+
 
 #### Author: [Charlie Robbins](http://www.charlierobbins.com)
 #### Contributors: [Elijah Insua](http://github.com/tmpvar) [Matthew Bergman](http://github.com/fotoverite)

@@ -80,7 +80,7 @@ Rackspace CloudServers exposes an API that allows you to include an arbitrary nu
     }]
   };
   
-  client.createServer(options, function (server) { 
+  client.createServer(options, function (err, server) { 
     // Your server is now being built and will be ready shortly
   });
 </pre>
@@ -96,7 +96,7 @@ Once you've created a server, you can't work with it until it has become active.
 ### Working with Servers
 If you have already created a some [Rackspace CloudServer][4] instances it is easy to get them from your account with node-cloudservers with the getServers method. This method takes an optional first parameter that when set to true will return all details for the servers:
 <pre>
-  client.getServers(true, function (servers) {
+  client.getServers(true, function (err, servers) {
     // Inspect the servers that have been returned
     util.inspect(servers);
   });

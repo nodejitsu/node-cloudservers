@@ -62,7 +62,7 @@ If you manually create servers yourself via the [Rackspace CloudServer][4] manag
     flavor: 1, // 256 server
   };
 
-  client.createServer(options, function (server) { 
+  client.createServer(options, function (err, server) { 
     // Your server is now being built and will be ready shortly
   });
 </pre> 

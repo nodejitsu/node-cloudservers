@@ -7,19 +7,18 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
-
-var fs = require('fs'),
+var assert = require('assert'),
+    fs = require('fs'),
     path = require('path'),
-    vows = require('vows'),
-    assert = require('assert'),
-    cloudservers = require('cloudservers'),
     spawn = require('child_process').spawn,
-    helpers = require('./helpers'),
-    keyBuffer = fs.readFileSync(__dirname + '/fixtures/testkey.pub');
-
-var testServer, testData = {}, 
-    client = helpers.createClient();
+    vows = require('vows'),
+    cloudservers = require('../lib/cloudservers'),
+    helpers = require('./helpers');
+    
+var keyBuffer = fs.readFileSync(__dirname + '/fixtures/testkey.pub'),
+    client = helpers.createClient(),
+    testData = {}, 
+    testServer;
 
 vows.describe('node-cloudservers/personalities').addBatch({
   "The node-cloudservers client": {
@@ -45,7 +44,7 @@ vows.describe('node-cloudservers/personalities').addBatch({
   }
 }).addBatch({
   "connect via ssh" : {
-    topic : function() {
+    topic : function () {
       var data = "", self = this;
       testServer.setWait({ status: 'ACTIVE' }, 5000, function () {
         var ssh  = spawn('ssh', [
@@ -58,23 +57,23 @@ vows.describe('node-cloudservers/personalities').addBatch({
           'cat /root/.ssh/authorized_keys'
         ]);
         
-        var e = function(err) {
+        var e = function (err) {
           console.log(err);
         };
         
         ssh.stderr.on("error", e);
-        ssh.stderr.on("data", function(chunk) {});
+        ssh.stderr.on("data", function (chunk) {});
         ssh.stdout.on("error", e);
-        ssh.stdout.on("data", function(chunk) {
+        ssh.stdout.on("data", function (chunk) {
           data += chunk.toString();
         });
         ssh.on('error', e);
-        ssh.on('exit', function() {
+        ssh.on('exit', function () {
           self.callback(null, data)
         });
       });
     },
-    "should connect without a password prompt": function(err, output) {
+    "should connect without a password prompt": function (err, output) {
       assert.equal(output, keyBuffer.toString());
     }
   }

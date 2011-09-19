@@ -6,13 +6,11 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
-
 var fs = require('fs'),
     path = require('path'),
     vows = require('vows'),
     assert = require('assert'),
-    cloudservers = require('cloudservers'),
+    cloudservers = require('../lib/cloudservers'),
     helpers = require('./helpers');
     
 var testData = {}, 
@@ -20,7 +18,7 @@ var testData = {},
     
 vows.describe('node-cloudservers/authentication').addBatch({
   "The node-cloudservers client": {
-    "should have core methods defined": function() {
+    "should have core methods defined": function () {
       assert.isObject(client.config.auth);
       assert.include(client.config.auth, 'username');
       assert.include(client.config.auth, 'apiKey');

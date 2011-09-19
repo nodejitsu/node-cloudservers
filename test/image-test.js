@@ -6,13 +6,11 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
- 
-var fs = require('fs'),
+var assert = require('assert'),
+    fs = require('fs'),
     path = require('path'),
     vows = require('vows'),
-    assert = require('assert'),
-    cloudservers = require('cloudservers'),
+    cloudservers = require('../lib/cloudservers'),
     helpers = require('./helpers');
 
 var testData = {};

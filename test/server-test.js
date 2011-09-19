@@ -6,32 +6,28 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
- 
-var fs = require('fs'),
+var assert = require('assert'),
+    fs = require('fs'),
     path = require('path'),
     vows = require('vows'),
-    assert = require('assert'),
-    cloudservers = require('cloudservers'),
+    cloudservers = require('../lib/cloudservers'),
     helpers = require('./helpers');    
 
 var testData = {}, 
-    testContext = {},
+    testContext = { servers: [] },
     client = helpers.createClient();
 
-testContext.servers = [];
-
 var findImage = function (name) {
-  for(var i = 0; i < testContext.images.length; i++) {
-    if(testContext.images[i].name === name) {
+  for (var i = 0; i < testContext.images.length; i++) {
+    if (testContext.images[i].name === name) {
       return testContext.images[i];
     }
   }
 }
 
 var findFlavor = function (name) {
-  for(var i = 0; i < testContext.flavors.length; i++) {
-    if(testContext.flavors[i].name === name) {
+  for (var i = 0; i < testContext.flavors.length; i++) {
+    if (testContext.flavors[i].name === name) {
       return testContext.flavors[i];
     }
   }
@@ -307,7 +303,7 @@ vows.describe('node-cloudservers/servers').addBatch({
         "should respond with 202": function (err, res) {
           assert.isNull(err);
           assert.isNull(err);
-          if(!err) {
+          if (!err) {
             assert.equal(res.statusCode, 202); 
           }
         }

@@ -13,7 +13,8 @@
   },
   "keywords": ["cloud computing", "api", "rackspace cloud", "cloudservers"],
   "dependencies": {
-    "request": "1.9.x"
+    "pkginfo": "0.2.x",
+    "request": "2.1.x"
   },
   "devDependencies": {
     "vows": "0.5.x"

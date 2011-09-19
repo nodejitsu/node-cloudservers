@@ -6,20 +6,25 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
- 
-var path = require('path'),
-    vows = require('vows'),
-    util = require('util'),
+var assert = require('assert'),
     fs = require('fs'),
-    assert = require('assert'),
-    cloudservers = require('cloudservers');
+    path = require('path'),
+    util = require('util'),
+    vows = require('vows'),
+    cloudservers = require('../lib/cloudservers');
     
-var testConfig, client, helpers = exports;
+var helpers = exports,
+    testConfig, 
+    client;
 
 helpers.createClient = function () {
-  if (!testConfig) helpers.loadConfig();
-  if (!client) client = cloudservers.createClient(testConfig);
+  if (!testConfig) {
+    helpers.loadConfig();
+  }
+  
+  if (!client) {
+    client = cloudservers.createClient(testConfig);
+  }
   
   return client;
 };

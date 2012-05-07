@@ -2,16 +2,22 @@
   "name": "cloudservers",
   "description": "A client implementation for Rackspace CloudServers in node.js",
   "version": "0.2.9",
-  "author": "Charlie Robbins <charlie.robbins@gmail.com>",
-  "contributors": [
-    { "name": "Elijah Insua", "email": "tmpvar@gmail.com" },
-    { "name": "Matthew Bergman", "email": "mzbphoto@gmail.com" }
+  "author": "Nodejitsu Inc. <info@nodejitsu.com>",
+  "maintainers": [
+    "indexzero <charlie@nodejitsu.com>",
+    "bmeck <bradley@nodejitsu.com>",
+    "indutny <fedor.indutny@gmail.com>"
   ],
   "repository": {
     "type": "git",
-    "url": "http://github.com/nodejitsu/node-cloudservers.git" 
+    "url": "http://github.com/nodejitsu/node-cloudservers.git"
   },
-  "keywords": ["cloud computing", "api", "rackspace cloud", "cloudservers"],
+  "keywords": [
+    "cloud computing",
+    "api",
+    "rackspace cloud",
+    "cloudservers"
+  ],
   "dependencies": {
     "pkginfo": "0.2.x",
     "request": "2.9.x"
@@ -20,6 +26,11 @@
     "vows": "0.5.x"
   },
   "main": "./lib/cloudservers",
-  "scripts": { "test": "vows test/*-test.js --spec" },
-  "engines": { "node": ">= 0.4" }
+  "scripts": {
+    "test": "vows test/*-test.js --spec"
+  },
+  "engines": {
+    "node": ">= 0.4"
+  }
 }
+

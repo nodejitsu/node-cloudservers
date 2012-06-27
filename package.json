@@ -1,7 +1,7 @@
 {
   "name": "cloudservers",
   "description": "A client implementation for Rackspace CloudServers in node.js",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "maintainers": [
     "indexzero <charlie@nodejitsu.com>",

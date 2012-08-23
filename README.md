@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/nodejitsu/node-cloudservers.png)](http://travis-ci.org/nodejitsu/node-cloudservers)
 # node-cloudservers
 
 A client implementation for Rackspace CloudServers in node.js

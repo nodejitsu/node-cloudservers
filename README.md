@@ -2,6 +2,7 @@
 
 A client implementation for Rackspace CloudServers in node.js
 
+**THIS LIBRARY IS DEPRECATED. ALL FIXES SHOULD BE DIRECTED to [pkgcloud](https://github.com/nodejitsu/pkgcloud)**
 
 ## Installation
 
